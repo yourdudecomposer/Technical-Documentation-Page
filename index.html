@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Technical Documentation Page</title>
 </head>
 
@@ -33,7 +34,7 @@
             </li>
             <li>
                 <a class="nav-link" href="#The_Data_Flows_Down">The Data Flows Down</a>
-                
+
             </li>
         </ul>
     </nav>
@@ -41,27 +42,126 @@
     <main id="main-doc">
         <section class="main-section" id="Function_component">
             <header>Function component</header>
+            <article>
+                <p>
+                    Consider the ticking clock example from one of the previous sections. In Rendering Elements, we have
+                    only learned one way to update the UI. We call ReactDOM.render() to change the rendered output:
+                </p>
+                <pre><code>
+function tick() {
+    const element = (
+        &lt;div&gt;
+            &lt;h1&gt;Hello, world!&lt;/h1&gt;
+            &lt;h2&gt;It is {new Date().toLocaleTimeStrin()}.&lt;/h2&gt;
+        &lt;/div&gt;
+    );
+    ReactDOM.render(
+        element,
+        document.getElementById('root')
+    );
+}
+  
+  setInterval(tick, 1000);
+</pre></code>
+                <p>
+                    In this section, we will learn how to make the Clock component truly reusable and encapsulated. It
+                    will set up its own timer and update itself every second.
+                </p>
+                <p>
+                    We can start by encapsulating how the clock looks:
+                </p>
+                <pre><code>
+function Clock(props) {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;Hello, world!&lt;/h1&gt;
+            &lt;h2&gt;It is {props.date.toLocaleTimeString()}.&lt;/h2&gt;
+        &lt;/div&gt;
+    );
+}
+                      
+function tick() {
+    ReactDOM.render(
+        &lt;Clock date={new Date()} /&gt;,
+        document.getElementById('root')
+    );
+}
+
+setInterval(tick, 1000);                   
+                </code></pre>
+                <p>
+                    However, it misses a crucial requirement: the fact that the Clock sets up a timer and updates the UI
+                    every second should be an implementation detail of the Clock.
+                </p>
+                <p>
+                    Ideally we want to write this once and have the Clock update itself:
+                </p>
+                <pre><code>
+ReactDOM.render(
+    &lt;Clock /&gt;,
+    document.getElementById('root')
+);
+                            </code></pre>
+                <p>
+                    To implement this, we need to add “state” to the Clock component.
+                </p>
+                <p>
+                    State is similar to props, but it is private and fully controlled by the component.
+                </p>
+            </article>
         </section>
         <section class="main-section" id="Converting_a_Function_to_a_Class">
             <header>Converting a Function to a Class
             </header>
+            <article>
+                <p>
+                    You can convert a function component like Clock to a class in five steps:
+                </p>
+                <ol>
+                    <li>Create an ES6 class, with the same name, that extends React.Component.
+                    </li>
+                    <li>Add a single empty method to it called render().
+                    </li>
+                    <li>Move the body of the function into the render() method.
+                    </li>
+                    <li>Replace props with this.props in the render() body.
+                    </li>
+                    <li>Delete the remaining empty function declaration.
+                    </li>
+                </ol>
+                <pre><code>
+class Clock extends React.Component {
+    render() {
+        return (
+            &lt;div&gt;
+                &lt;h1&gt;Hello, world!&lt;/h1&gt;
+                &lt;h2&gt;It is {this.props.date.toLocaleTimeString()}.&lt;/h2&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+                </code></pre>
+                <p>
+                    Clock is now defined as a class rather than a function.
+                </p>
+                <p>
+                    The render method will be called each time an update happens, but as long as we render <Clock /> into the same DOM node, only a single instance of the Clock class will be used. This lets us use additional features such as local state and lifecycle methods.
+                </p>
+            </article>
         </section>
         <section class="main-section" id="Adding_Local_State_to_a_Class">
             <header>Adding Local State to a Class
             </header>
         </section>
-        <section class="main-section" id="Adding_Lifecycle_Methods_to_a_Class
-        ">
+        <section class="main-section" id="Adding_Lifecycle_Methods_to_a_Class">
             <header>Adding Lifecycle Methods to a Class
             </header>
         </section>
-        <section class="main-section" id="Using_State_Correctly
-        ">
+        <section class="main-section" id="Using_State_Correctly">
             <header>Using State Correctly
             </header>
         </section>
-        <section class="main-section" id="The_Data_Flows_Down
-        ">
+        <section class="main-section" id="The_Data_Flows_Down">
             <header>The Data Flows Down
             </header>
         </section>
