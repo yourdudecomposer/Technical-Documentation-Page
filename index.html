@@ -47,8 +47,7 @@
                     Consider the ticking clock example from one of the previous sections. In Rendering Elements, we have
                     only learned one way to update the UI. We call ReactDOM.render() to change the rendered output:
                 </p>
-                <pre><code>
-function tick() {
+                <pre><code>function tick() {
     const element = (
         &lt;div&gt;
             &lt;h1&gt;Hello, world!&lt;/h1&gt;
@@ -70,8 +69,7 @@ setInterval(tick, 1000);
                 <p>
                     We can start by encapsulating how the clock looks:
                 </p>
-                <pre><code>
-function Clock(props) {
+                <pre><code>function Clock(props) {
     return (
         &lt;div&gt;
             &lt;h1&gt;Hello, world!&lt;/h1&gt;
@@ -96,8 +94,7 @@ setInterval(tick, 1000);
                 <p>
                     Ideally we want to write this once and have the Clock update itself:
                 </p>
-                <pre><code>
-ReactDOM.render(
+                <pre><code>ReactDOM.render(
     &lt;Clock /&gt;,
     document.getElementById('root')
 );
@@ -129,8 +126,7 @@ ReactDOM.render(
                     <li>Delete the remaining empty function declaration.
                     </li>
                 </ol>
-                <pre><code>
-class Clock extends React.Component {
+                <pre><code>class Clock extends React.Component {
     render() {
         return (
             &lt;div&gt;
@@ -161,8 +157,7 @@ class Clock extends React.Component {
                     <li>Replace this.props.date with this.state.date in the render() method:
                     </li>
                 </ol>
-                <pre><code>
-class Clock extends React.Component {
+                <pre><code>class Clock extends React.Component {
     render() {
         return (
         &lt;div&gt;
@@ -178,8 +173,7 @@ class Clock extends React.Component {
                         Add a class constructor that assigns the initial this.state:
                     </li>
                 </ol>
-                <pre><code>
-class Clock extends React.Component {
+                <pre><code>class Clock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {date: new Date()};
@@ -197,8 +191,7 @@ class Clock extends React.Component {
 </code></pre>
                 <p>Note how we pass props to the base constructor:
                 </p>
-                <pre><code>
-constructor(props) {
+                <pre><code>constructor(props) {
     super(props);
     this.state = {date: new Date()};
 }
@@ -211,8 +204,7 @@ constructor(props) {
                         Remove the date prop from the &lt;Clock /&gt; element:
                     </li>
                 </ol>
-                <pre><code>
-ReactDOM.render(
+                <pre><code>ReactDOM.render(
     &lt;Clock /&gt;,
     document.getElementById('root')
 );
@@ -223,8 +215,7 @@ ReactDOM.render(
                 <p>
                     The result looks like this:
                 </p>
-                <pre><code>
-class Clock extends React.Component {
+                <pre><code>class Clock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {date: new Date()};
@@ -261,8 +252,7 @@ ReactDOM.render(
                     “unmounting” in React.</p>
                 <p>We can declare special methods on the component class to run some code when a component mounts and
                     unmounts:</p>
-                <pre><code>
-class Clock extends React.Component {
+                <pre><code>class Clock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {date: new Date()};
@@ -287,8 +277,7 @@ class Clock extends React.Component {
                     These methods are called “lifecycle methods”.</p>
                 <p>The componentDidMount() method runs after the component output has been rendered to the DOM. This is
                     a good place to set up a timer:</p>
-                <pre><code>
-componentDidMount() {
+                <pre><code>componentDidMount() {
     this.timerID = setInterval(
         () =&gt; this.tick(),
         1000
@@ -302,8 +291,7 @@ componentDidMount() {
                     the data flow (like a timer ID).</p>
                 <p>We will tear down the timer in the componentWillUnmount() lifecycle method:
                 </p>
-                <pre><code>
-    componentWillUnmount() {
+                <pre><code>componentWillUnmount() {
         clearInterval(this.timerID);
       }
 </code></pre>
@@ -311,8 +299,7 @@ componentDidMount() {
                 <p>It will use this.setState() to schedule updates to the component local state:
 
                 </p>
-                <pre><code>
-class Clock extends React.Component {
+                <pre><code>class Clock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {date: new Date()};
@@ -383,14 +370,12 @@ ReactDOM.render(
                 <p>
                     For example, this will not re-render a component:
                 </p>
-                <pre><code>
-// Wrong
+                <pre><code>// Wrong
 this.state.comment = 'Hello';
 </code></pre>
                 <p>Instead, use setState():
                 </p>
-                <pre><code>
-// Correct
+                <pre><code>// Correct
 this.setState({comment: 'Hello'});</code></pre>
                 <p>The only place where you can assign this.state is the constructor.</p>
                 <h3>State Updates May Be Asynchronous
@@ -402,8 +387,7 @@ this.setState({comment: 'Hello'});</code></pre>
                     for calculating the next state.</p>
                 <p>For example, this code may fail to update the counter:
                 </p>
-                <pre><code>
-// Wrong
+                <pre><code>// Wrong
 this.setState({
     counter: this.state.counter + this.props.increment,
 });
@@ -412,15 +396,13 @@ this.setState({
                     function will receive the previous state as the first argument, and the props at the time the update
                     is applied as the second argument:
                 </p>
-                <pre><code>
-// Correct
+                <pre><code>// Correct
 this.setState((state, props) => ({
     counter: state.counter + props.increment
 }));
 </code></pre>
                 <p>We used an arrow function above, but it also works with regular functions:</p>
-                <pre><code>
-// Correct
+                <pre><code>// Correct
 this.setState(function(state, props) {
     return {
         counter: state.counter + props.increment
@@ -431,8 +413,7 @@ this.setState(function(state, props) {
                 </h3>
                 <p>When you call setState(), React merges the object you provide into the current state.</p>
                 <p>For example, your state may contain several independent variables:</p>
-                <pre><code>
-constructor(props) {
+                <pre><code>constructor(props) {
     super(props);
     this.state = {
         posts: [],
@@ -441,8 +422,7 @@ constructor(props) {
 }
 </code></pre>
                 <p>Then you can update them independently with separate setState() calls:</p>
-                <pre><code>
-componentDidMount() {
+                <pre><code>componentDidMount() {
     fetchPosts().then(response =&gt; {
         this.setState({
         posts: response.posts
@@ -469,15 +449,13 @@ componentDidMount() {
             <p>This is why state is often called local or encapsulated. It is not accessible to any component other than
                 the one that owns and sets it.</p>
             <p>A component may choose to pass its state down as props to its child components: </p>
-            <pre><code>
-&lt;FormattedDate date={this.state.date} /&gt;
+            <pre><code>&lt;FormattedDate date={this.state.date} /&gt;
 </code></pre>
             <p>
                 The FormattedDate component would receive the date in its props and wouldn’t know whether it came from
                 the Clock’s state, from the Clock’s props, or was typed by hand:
             </p>
-            <pre><code>
-function FormattedDate(props) {
+            <pre><code>function FormattedDate(props) {
     return &lt;h2&gt;It is {props.date.toLocaleTimeString()}.&lt;/h2&gt;;
 }
 </code></pre>
@@ -494,8 +472,7 @@ function FormattedDate(props) {
                 To show that all components are truly isolated, we can create an App component that renders three
                 &lt;Clock&gt;s:
             </p>
-            <pre><code>
-function App() {
+            <pre><code>function App() {
     return (
         &lt;div&gt;
             &lt;Clock /&gt;
@@ -518,6 +495,7 @@ ReactDOM.render(
                 vice versa.</p>
         </section>
     </main>
+    <a class="btn" href="#navbar"><img src="up.png" alt=""></a>
 </body>
 
 </html>
